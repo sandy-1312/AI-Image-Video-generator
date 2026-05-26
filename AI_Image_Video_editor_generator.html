@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>AI Media Generator</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#111827 100%);
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    position:relative;
+}
+
+/* BACKGROUND */
+
+body::before{
+    content:'';
+    position:fixed;
+    width:600px;
+    height:600px;
+    background:radial-gradient(circle, rgba(0,255,255,0.2) 0%, rgba(0,255,255,0.05) 70%);
+    border-radius:50%;
+    filter:blur(120px);
+    top:-200px;
+    left:-150px;
+    animation:float1 15s ease-in-out infinite alternate;
+    z-index:1;
+}
+
+body::after{
+    content:'';
+    position:fixed;
+    width:550px;
+    height:550px;
+    background:radial-gradient(circle, rgba(255,0,200,0.15) 0%, rgba(255,0,200,0.02) 70%);
+    border-radius:50%;
+    filter:blur(120px);
+    bottom:-200px;
+    right:-150px;
+    animation:float2 20s ease-in-out infinite alternate;
+    z-index:1;
+}
+
+@keyframes float1{
+    from{
+        transform:translateY(0px) scale(1);
+    }
+    to{
+        transform:translateY(60px) scale(1.1);
+    }
+}
+
+@keyframes float2{
+    from{
+        transform:translateY(0px) scale(1);
+    }
+    to{
+        transform:translateY(-60px) scale(0.95);
+    }
+}
+
+/* CONTAINER */
+
+.container{
+    position:relative;
+    z-index:10;
+    width:95%;
+    max-width:1250px;
+    background:rgba(15,23,42,0.4);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(30px);
+    border-radius:40px;
+    padding:50px;
+    box-shadow:
+        0 25px 50px rgba(0,0,0,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:stretch;
+    gap:50px;
+    flex-wrap:wrap;
+}
+
+/* LEFT */
+
+.left{
+    flex:1;
+    min-width:320px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.title{
+    font-size:3.5rem;
+    line-height:1.15;
+    font-weight:800;
+    margin-bottom:20px;
+    letter-spacing:-1.5px;
+}
+
+.title span{
+    background:linear-gradient(120deg,#00f7ff,#0097ff,#ff00d4,#00f7ff);
+    background-size:300% 300%;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    animation:gradientShift 6s ease infinite;
+}
+
+@keyframes gradientShift{
+    0%{
+        background-position:0% 50%;
+    }
+    50%{
+        background-position:100% 50%;
+    }
+    100%{
+        background-position:0% 50%;
+    }
+}
+
+.desc{
+    color:#cbd5e1;
+    line-height:1.8;
+    margin-bottom:30px;
+    max-width:580px;
+    font-size:1.05rem;
+}
+
+/* MODE BUTTONS */
+
+.mode-selector{
+    display:flex;
+    gap:14px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.mode-btn{
+    padding:14px 24px;
+    border:none;
+    border-radius:16px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.08);
+    color:white;
+    font-weight:700;
+    transition:0.3s;
+}
+
+.mode-btn.active{
+    background:linear-gradient(135deg,#00f7ff,#0097ff);
+}
+
+.mode-btn:hover{
+    transform:translateY(-2px);
+}
+
+/* PROMPT */
+
+.prompt-box{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+input{
+    flex:1;
+    min-width:240px;
+    padding:16px 22px;
+    border:2px solid rgba(255,255,255,0.1);
+    border-radius:18px;
+    outline:none;
+    background:rgba(255,255,255,0.06);
+    color:white;
+    font-size:1rem;
+    transition:0.3s;
+}
+
+input::placeholder{
+    color:rgba(203,213,225,0.6);
+}
+
+input:focus{
+    border-color:rgba(0,247,255,0.5);
+    background:rgba(255,255,255,0.1);
+}
+
+/* BUTTONS */
+
+button{
+    padding:16px 30px;
+    border:none;
+    border-radius:18px;
+    background:linear-gradient(135deg,#00f7ff,#0097ff);
+    color:white;
+    font-size:1rem;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 25px rgba(0,247,255,0.25);
+}
+
+button:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
+}
+
+/* UPLOAD */
+
+.upload-section{
+    margin-top:24px;
+}
+
+.upload-btn{
+    display:inline-block;
+    padding:14px 24px;
+    border-radius:16px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.08);
+    transition:0.3s;
+    font-weight:600;
+}
+
+.upload-btn:hover{
+    background:rgba(255,255,255,0.14);
+}
+
+#fileName{
+    margin-top:12px;
+    color:#cbd5e1;
+    font-size:0.9rem;
+}
+
+/* ACTION BUTTONS */
+
+.action-buttons{
+    display:flex;
+    gap:14px;
+    margin-top:24px;
+    flex-wrap:wrap;
+}
+
+.action-buttons button{
+    flex:1;
+}
+
+/* LOADER */
+
+.loader{
+    margin-top:30px;
+    display:none;
+    align-items:center;
+    gap:12px;
+}
+
+.dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#00f7ff,#0097ff);
+    animation:pulse 1.4s infinite;
+}
+
+.dot:nth-child(2){
+    animation-delay:0.2s;
+}
+
+.dot:nth-child(3){
+    animation-delay:0.4s;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+        opacity:0.5;
+    }
+    50%{
+        transform:scale(1.4);
+        opacity:1;
+    }
+}
+
+.loader span{
+    color:#cbd5e1;
+    font-weight:600;
+}
+
+/* SUCCESS */
+
+.success-indicator{
+    display:none;
+    align-items:center;
+    gap:8px;
+    color:#10b981;
+    margin-top:18px;
+    font-weight:600;
+}
+
+.success-indicator::before{
+    content:'✓';
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:rgba(16,185,129,0.2);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* RIGHT */
+
+.right{
+    width:400px;
+    height:520px;
+    border-radius:30px;
+    overflow:hidden;
+    position:relative;
+    background:#111827;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.5),
+        0 0 40px rgba(0,247,255,0.1);
+    border:1px solid rgba(0,247,255,0.2);
+}
+
+.preview-wrapper{
+    width:100%;
+    height:100%;
+    position:relative;
+}
+
+.preview{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    position:absolute;
+    opacity:0;
+    transition:0.5s;
+}
+
+.preview.active{
+    opacity:1;
+}
+
+video.preview{
+    background:black;
+}
+
+/* OVERLAY */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        180deg,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.2) 40%,
+        rgba(0,0,0,0.7) 100%
+    );
+    z-index:2;
+}
+
+/* TEXT */
+
+.video-text{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:3;
+    padding:30px;
+}
+
+.video-text h3{
+    font-size:1.5rem;
+    margin-bottom:8px;
+}
+
+.video-text p{
+    color:#cbd5e1;
+}
+
+/* MOBILE */
+
+@media(max-width:950px){
+
+    .top{
+        flex-direction:column;
+    }
+
+    .right{
+        width:100%;
+        max-width:420px;
+        margin:auto;
+    }
+
+    .title{
+        font-size:2.8rem;
+    }
+
+}
+
+@media(max-width:640px){
+
+    body{
+        overflow:auto;
+        padding:20px 0;
+    }
+
+    .container{
+        padding:28px 20px;
+        border-radius:28px;
+    }
+
+    .title{
+        font-size:2rem;
+    }
+
+    .prompt-box{
+        flex-direction:column;
+    }
+
+    input,
+    button{
+        width:100%;
+    }
+
+    .action-buttons{
+        flex-direction:column;
+    }
+
+    .right{
+        height:420px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top">
+
+        <!-- LEFT -->
+        <div class="left">
+
+            <h1 class="title">
+                AI <span>Media Generator</span>
+            </h1>
+
+            <p class="desc">
+                Generate and edit stunning AI photos and cinematic videos using prompts.
+                Upload your own image or video and transform it with AI-powered creativity.
+            </p>
+
+            <!-- MODE -->
+            <div class="mode-selector">
+
+                <button class="mode-btn active" id="imageMode">
+                    Image
+                </button>
+
+                <button class="mode-btn" id="videoMode">
+                    Video
+                </button>
+
+            </div>
+
+            <!-- PROMPT -->
+            <div class="prompt-box">
+
+                <input
+                    type="text"
+                    id="prompt"
+                    placeholder="Describe what you want to generate or edit..."
+                    maxlength="150"
+                />
+
+                <button id="genBtn">
+                    Generate
+                </button>
+
+            </div>
+
+            <!-- UPLOAD -->
+            <div class="upload-section">
+
+                <label class="upload-btn">
+
+                    Upload Media
+
+                    <input
+                        type="file"
+                        id="mediaUpload"
+                        accept="image/*,video/*"
+                        hidden
+                    />
+
+                </label>
+
+                <p id="fileName">
+                    No file selected
+                </p>
+
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="action-buttons">
+
+                <button id="editBtn">
+                    Edit Media
+                </button>
+
+                <button id="downloadBtn">
+                    Download
+                </button>
+
+            </div>
+
+            <!-- LOADER -->
+            <div class="loader" id="loader">
+
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+
+                <span>Generating AI magic...</span>
+
+            </div>
+
+            <!-- SUCCESS -->
+            <div class="success-indicator" id="successIndicator">
+                Media generated successfully!
+            </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div class="right">
+
+            <div class="preview-wrapper">
+
+                <!-- IMAGE -->
+                <img
+                    id="imagePreview"
+                    class="preview active"
+                    src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
+                />
+
+                <!-- VIDEO -->
+                <video
+                    id="videoPreview"
+                    class="preview"
+                    controls
+                    muted
+                    loop
+                ></video>
+
+                <div class="overlay"></div>
+
+                <div class="video-text">
+
+                    <h3 id="videoTitle">
+                        AI Media Preview
+                    </h3>
+
+                    <p id="mediaTypeText">
+                        AI Generated Content
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ELEMENTS */
+
+const promptInput = document.getElementById("prompt");
+
+const genBtn = document.getElementById("genBtn");
+
+const editBtn = document.getElementById("editBtn");
+
+const loader = document.getElementById("loader");
+
+const successIndicator =
+document.getElementById("successIndicator");
+
+const imagePreview =
+document.getElementById("imagePreview");
+
+const videoPreview =
+document.getElementById("videoPreview");
+
+const imageMode =
+document.getElementById("imageMode");
+
+const videoMode =
+document.getElementById("videoMode");
+
+const mediaUpload =
+document.getElementById("mediaUpload");
+
+const fileName =
+document.getElementById("fileName");
+
+const videoTitle =
+document.getElementById("videoTitle");
+
+const mediaTypeText =
+document.getElementById("mediaTypeText");
+
+const downloadBtn =
+document.getElementById("downloadBtn");
+
+/* VARIABLES */
+
+let currentMode = "image";
+
+let uploadedFile = null;
+
+/* MODE SWITCH */
+
+imageMode.addEventListener("click", () => {
+
+    currentMode = "image";
+
+    imageMode.classList.add("active");
+
+    videoMode.classList.remove("active");
+
+    mediaTypeText.innerText = "AI Image";
+
+});
+
+videoMode.addEventListener("click", () => {
+
+    currentMode = "video";
+
+    videoMode.classList.add("active");
+
+    imageMode.classList.remove("active");
+
+    mediaTypeText.innerText = "AI Video";
+
+});
+
+/* FILE UPLOAD */
+
+mediaUpload.addEventListener("change", (e) => {
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    uploadedFile = file;
+
+    fileName.innerText = file.name;
+
+    const fileURL = URL.createObjectURL(file);
+
+    /* IMAGE */
+
+    if(file.type.startsWith("image")){
+
+        imagePreview.src = fileURL;
+
+        imagePreview.classList.add("active");
+
+        videoPreview.classList.remove("active");
+
+        videoTitle.innerText = "Uploaded Image";
+
+    }
+
+    /* VIDEO */
+
+    else if(file.type.startsWith("video")){
+
+        videoPreview.src = fileURL;
+
+        videoPreview.classList.add("active");
+
+        imagePreview.classList.remove("active");
+
+        videoTitle.innerText = "Uploaded Video";
+
+    }
+
+});
+
+/* GENERATE */
+
+genBtn.addEventListener("click", () => {
+
+    const prompt = promptInput.value.trim();
+
+    if(prompt === ""){
+
+        alert("Please enter a prompt");
+
+        return;
+    }
+
+    startGenerating();
+
+    setTimeout(() => {
+
+        /* IMAGE */
+
+        if(currentMode === "image"){
+
+            imagePreview.src =
+            "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?q=80&w=1200&auto=format&fit=crop";
+
+            imagePreview.classList.add("active");
+
+            videoPreview.classList.remove("active");
+
+            mediaTypeText.innerText =
+            "AI Generated Image";
+
+        }
+
+        /* VIDEO */
+
+        else{
+
+            videoPreview.src =
+            "https://www.w3schools.com/html/mov_bbb.mp4";
+
+            videoPreview.classList.add("active");
+
+            imagePreview.classList.remove("active");
+
+            mediaTypeText.innerText =
+            "AI Generated Video";
+
+        }
+
+        finishGenerating(prompt);
+
+    }, 3000);
+
+});
+
+/* EDIT */
+
+editBtn.addEventListener("click", () => {
+
+    if(!uploadedFile){
+
+        alert("Upload an image or video first");
+
+        return;
+    }
+
+    const prompt = promptInput.value.trim();
+
+    if(prompt === ""){
+
+        alert("Enter editing instructions");
+
+        return;
+    }
+
+    startGenerating();
+
+    setTimeout(() => {
+
+        videoTitle.innerText =
+        "Edited: " + prompt;
+
+        finishGenerating(prompt);
+
+    }, 3000);
+
+});
+
+/* START LOADER */
+
+function startGenerating(){
+
+    loader.style.display = "flex";
+
+    successIndicator.style.display = "none";
+
+    genBtn.disabled = true;
+
+    editBtn.disabled = true;
+
+    videoTitle.innerText = "Processing...";
+
+}
+
+/* FINISH */
+
+function finishGenerating(prompt){
+
+    loader.style.display = "none";
+
+    successIndicator.style.display = "flex";
+
+    videoTitle.innerText = prompt;
+
+    genBtn.disabled = false;
+
+    editBtn.disabled = false;
+
+}
+
+/* DOWNLOAD */
+
+downloadBtn.addEventListener("click", () => {
+
+    let url = "";
+
+    if(currentMode === "image"){
+
+        url = imagePreview.src;
+
+    }else{
+
+        url = videoPreview.src;
+
+    }
+
+    const a = document.createElement("a");
+
+    a.href = url;
+
+    a.download = "ai-media";
+
+    a.click();
+
+});
+
+/* ENTER KEY */
+
+promptInput.addEventListener("keypress", (e) => {
+
+    if(e.key === "Enter"){
+
+        genBtn.click();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

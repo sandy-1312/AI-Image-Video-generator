@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sandipan's Portfolio</title>
+
+    <link rel="stylesheet" href="Sandipan_Portfolio.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"/>
+
+<style>
+     :root{
+    --bg-color: #080808;
+    --second-bg-color: #001005;
+    --text-color: white;
+    --main-color: #00ff51;
+    --section-bg-color: rgb(3, 18, 3);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    outline: none;
+    border: none;   
+    scroll-behavior: smooth;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+html{
+    font-size: 1.4rem;
+    overflow-x: hidden;
+}
+
+body{
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+.header{
+    position: relative;
+    width: 100%;
+    top: 0;
+    left: 0;
+    padding: 30px 10%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.typing-text{
+    text-align: center;
+}
+
+#menu-icon{
+    font-size: 3rem;
+    color: var(--text-color);
+    cursor: pointer;
+    display: none;
+}
+
+.logo{
+    font-size: 1.5rem;
+    color: var(--main-color);
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    text-shadow: 0 0 10px var(--main-color);
+}
+
+.logo:hover{
+    transform: scale(1.05);
+    color: var(--main-color);
+}
+
+nav ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-left: 4rem;
+    color: var(--text-color);
+}
+
+nav ul li{
+    list-style: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 0.3rem;
+}
+
+nav ul li:hover{
+    color: var(--main-color);
+    transform: scale(1.1);
+    border-bottom: 2px solid var(--main-color);
+}
+
+span{
+    color: var(--main-color);
+}
+
+section{
+    min-height: 100vh;
+    padding: 5rem 5%;
+}
+
+.home{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.home-content{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.home-content h1{
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-top: 1.5 rem;
+}
+
+.home-content h3{
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 1.4rem 18%;
+}
+
+.home-content p{
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 8%;
+}
+
+.home-img img{
+    width: 300px;
+    height: 300px;
+    border-radius: 100%;
+    box-shadow: 0 0 25px var(--main-color);
+    transition: all 0.5s ease;
+}
+
+.home-img img:hover{
+    box-shadow: 0 0 25px var(--main-color),
+                0 0 50px var(--main-color),
+                0 0 75px var(--main-color);
+}
+
+.social-icons{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    bottom: -60px; 
+    left: 40%; 
+    transform: translateX(-85%); 
+    gap: 1.5rem;
+}
+
+.social-icons a{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+    padding: 1rem;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 2px solid var(--main-color);
+    color: var(--main-color);
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover{
+    color: black;
+    background: var(--main-color);
+    transform: scale(1.15) translateY(-3px);
+    box-shadow: 0 0 15px var(--main-color);
+}
+
+.button-grp{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: absolute;
+    bottom: -180px; 
+    left: 49%; 
+    transform: translateX(-85%); 
+    gap: 1.5rem;
+}
+
+.btn{
+    display: inline-block;
+    padding: 0.8rem 2.5rem;
+    background: var(--main-color);
+    box-shadow: 0 0 15px var(--main-color);
+    color: black;
+    border-radius: 2rem;
+    font-size: 1.2rem;
+    border: 2px solid transparent;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+
+    .btn:hover{
+        background: transparent;
+        color: var(--main-color);
+        border: 2px solid var(--main-color);
+        transform: scale(1.1);
+        box-shadow: none;
+    }
+
+    .btn:nth-child(2){
+        background: transparent;
+        color: var(--main-color);
+        border: 2px solid var(--main-color);
+    }
+
+    .btn:nth-child(2):hover{
+        background: var(--main-color);
+        color: black;
+        border: 2px solid transparent;
+        box-shadow: 0 0 15px var(--main-color);
+    }
+
+.about{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 5rem;
+    background: rgb(3, 18, 3);
+}
+
+.abt{
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.about p{
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.8;
+    text-align: justify;
+}
+
+.btn{
+    margin-top: 2rem;
+}
+
+.education-section {
+            background: linear-gradient(to bottom, rgba(22, 22, 22, 0.9) 0%, black 100%);
+            padding: 60px 9%;
+            color: var(--text-color);
+            min-height: auto;
+            display: block;
+}
+
+.content-header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--main-color);
+            font-size: 2.5rem;
+            animation: fadeInUp 1s ease forwards;
+}
+
+.education-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+}
+
+.education-section .edu-box {
+            position: relative;
+            padding: 3.5rem 3.5rem 3.5rem 1.2rem;
+            border-left: 2px solid var(--main-color);
+            border-bottom: 2px solid var(--accent-color-1);
+            background: rgba(22, 22, 22, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: scaleIn 0.8s ease forwards;
+}
+
+.education-section .edu-box:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(183, 75, 75, 0.2);
+            background: rgba(22, 22, 22, 0.9);
+}
+
+.education-section .edu-box span {
+            position: relative;
+            display: block;
+            font-size: 1.5rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            margin-left: 1.5rem;
+            color: var(--accent-color-2);
+}
+
+.education-section .edu-box span::before {
+            position: absolute;
+            content: "";
+            width: 0.5rem;
+            height: 0.5rem;
+            background: var(--accent-color-1);
+            top: 0.5rem;
+            left: -1rem;
+            border-radius: 50%;
+            border: 2px solid var(--main-color);
+}
+
+.education-section .edu-box h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: var(--main-color);
+}
+
+.education-section .edu-box p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+}
+
+.list-item{
+    list-style: none;
+}
+
+.experience-section {
+            background: linear-gradient(to bottom, black 0%, rgba(22, 22, 22, 0.9) 100%);
+            padding: 60px 9%;
+            color: var(--text-color);
+            min-height: auto;
+            display: block;
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .experience-section .exp-col {
+            position: relative;
+            padding: 2.5rem 2.5rem 2.5rem 5rem;
+            border-left: 2px solid var(--primary-color);
+            border-bottom: 2px solid var(--accent-color-1);
+            background: rgba(22, 22, 22, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 1rem;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            animation: scaleIn 0.8s ease forwards;
+        }
+
+        .experience-section .exp-col:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(183, 75, 75, 0.2);
+            background: rgba(22, 22, 22, 0.9);
+        }
+
+        .experience-section .exp-col span {
+            position: relative;
+            display: block;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+            color: var(--accent-color-2);
+        }
+
+        .experience-section .exp-col span::before {
+            position: absolute;
+            content: "";
+            width: 1.2rem;
+            height: 1.2rem;
+            background: var(--accent-color-1);
+            top: 0.5rem;
+            left: -3.8rem;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+        }
+
+        .experience-section .exp-col h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .experience-section .exp-col p {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+</style>
+</head>
+<body>
+    <header class="header" id="header">
+        <a href="#home" class="logo">Sandipan</a>
+        <i class="bx bx-menu" id="menu-icon" aria-hidden="true" role="button" title="Toggle menu"></i>
+
+        <nav id="nav">
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="home" id="home">
+        <div class="home-content">
+            <h1>Hi, it's <span>Sandipan Das</span></h1>
+            <h3 class="typing-text">Welcome to my portfolio!</h3>
+            <p>
+                <br>I'm a 2<sup>nd</sup> year student studying Bachelor's in Computer Applications from Royal Global University, Guwahati, Assam aiming to build a strong foundation on Computer Science and focusing on subjects such as Data Structures, Computer Networking, DBMS, Operating Systems.
+            </p>
+        </div>
+
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/sandipan-das-1328aa315" target="_blank" rel="noopener">
+                <i class="bx bxl-linkedin-square"></i>
+            </a>
+            <a href="https://github.com/sandy-1312" target="_blank" rel="noopener">
+                <i class="bx bxl-github"></i>
+            </a>
+            <a href="https://www.instagram.com/sandiipan__19" target="_blank" rel="noopener">
+                <i class="bx bxl-instagram-alt"></i>
+            </a>
+        </div>
+
+        <div class="button-grp">
+            <a href="#" class="btn">Hire</a>
+            <a href="#contact" class="btn">Contact me</a>
+        </div>
+
+        <div class="home-img">
+            <img
+                src="https://via.placeholder.com/420x420.png?text=Sandipan"
+                data-large="https://via.placeholder.com/1200x1200.png?text=Sandipan+Large"
+                alt="Sandipan's Image"
+                id="profile-image"
+                loading="lazy"
+                style="cursor:pointer;"
+            >
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2 class="abt">About Me</h2>
+            <p>I'm a passionate web developer dedicated to creating beautiful and functional websites. Explore my projects, skills, and experience as you navigate through my portfolio. Feel free to reach out if you'd like to collaborate or learn more about my work.</p>
+            <a href="#" class="btn">Read More</a>
+        </div>
+    </section>
+
+    <section class="education-section" id="education">
+        <div class="edu-content">
+            <div class="content-header"><h1>Education</h1></div>
+            <div class="education-container">
+                <div class="edu-box">
+                    <li class="list-item"><span>2021 <i>to </i> 2022</span></li>
+                    <h3>Class 10</h3>
+                    <p>I passed out Class 10 in 2022 with 94%</p>
+                </div>
+                <div class="edu-box">
+                    <li class="list-item"><span>2022 <i>to </i>2024</span></li>
+                    <h3>Class 12</h3>
+                    <p>I passed out Class 12 in 2024 with 85%.</p>
+                </div>
+                <div class="edu-box">
+                    <li class="list-item"><span>2024 <i>to </i>Present</span></li>
+                    <h3>Graduation at RGU</h3>
+                    <p>Currently pursuing my graduation in Computer Science from Royal Global University, Guwahati</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New: Skills section (linked from navbar) -->
+    <section class="skills" id="skills">
+        <div class="content-header"><h1>Skills</h1></div>
+        <div class="skills-grid">
+            <ul>
+                <li>HTML & CSS</li>
+                <li>JavaScript (ES6+)</li>
+                <li>React / Frontend Frameworks</li>
+                <li>Node.js / Express</li>
+                <li>Databases (MySQL, MongoDB)</li>
+                <li>Version Control (Git)</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- New: Projects section (linked from navbar) -->
+    <section class="projects" id="projects">
+        <div class="content-header"><h1>Projects</h1></div>
+        <div class="projects-grid">
+            <article class="project-card">
+                <h3>Project A</h3>
+                <p>Short description of Project A. Tech used: HTML, CSS, JS</p>
+                <a href="#" class="btn view-project" data-project="a">View</a>
+            </article>
+            <article class="project-card">
+                <h3>Project B</h3>
+                <p>Short description of Project B. Tech used: React, Node</p>
+                <a href="#" class="btn view-project" data-project="b">View</a>
+            </article>
+            <article class="project-card">
+                <h3>Project C</h3>
+                <p>Short description of Project C. Tech used: Full-stack</p>
+                <a href="#" class="btn view-project" data-project="c">View</a>
+            </article>
+        </div>
+    </section>
+
+    <!-- New: Contact section (linked from navbar) -->
+    <section class="contact" id="contact">
+        <div class="content-header"><h1>Contact</h1></div>
+        <form id="contact-form" action="#" method="post" style="max-width:600px;">
+            
+            <button type="submit" class="btn">Send</button>
+        </form>
+    </section>
+
+    <section class="experience-section" id="experience">
+        <div class="content-inner">
+            <div class="content-header"><h1>Experience</h1></div>
+            <div class="experience-grid">
+                <div class="exp-col">
+                    <span>Feb 2025 <i>to</i> May 2025</span>
+                    <h3>Full Stack Web Developer Intern</h3>
+                    <p>Worked as a Full Stack Web Developer Intern at Unified Mentor, gaining hands-on experience with modern web development technologies and frameworks.</p>
+                    <span class="work-mode">HYBRID</span>
+                </div>
+                <div class="exp-col">
+                    <span>Jun 2025 <i>to</i> Aug 2025</span>
+                    <h3>Web Designer / Front End Developer</h3>
+                    <p>Worked as a Web Designer and Front End Developer at Xperteez Technology, creating responsive and user-friendly web interfaces using HTML, CSS, and JavaScript.</p>
+                    <span class="work-mode">ONSITE</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to top button -->
+    <button id="back-to-top" aria-label="Back to top" title="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Image modal (created in DOM by JS but provide a container to reuse) -->
+    <div id="image-modal" class="img-modal" aria-hidden="true" role="dialog">
+        <button class="close-btn" aria-label="Close image">&times;</button>
+        <img src="" alt="Expanded profile image">
+    </div>
+
+    <!-- Project details modal (simple) -->
+    <div id="project-modal" class="img-modal" aria-hidden="true" role="dialog" style="align-items:flex-start; padding-top:40px;">
+        <button class="close-btn" aria-label="Close project">&times;</button>
+        <div id="project-modal-content" style="background:#fff;color:#222;padding:20px;border-radius:8px;max-width:900px;width:95%;box-shadow:0 10px 30px rgba(0,0,0,0.3);"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuIcon = document.getElementById('menu-icon');
+            const nav = document.getElementById('nav');
+            const navLinks = document.querySelectorAll('nav a[href^="#"]');
+            const sections = document.querySelectorAll('section[id]');
+            const header = document.getElementById('header');
+
+            // Mobile menu toggle
+            menuIcon.addEventListener('click', function () {
+                nav.classList.toggle('active');
+                menuIcon.classList.toggle('bx-x');
+            });
+
+            // Smooth scroll + section activation when nav link clicked
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href').slice(1);
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        // scroll smoothly
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        // mark section as active (visual cue)
+                        document.querySelectorAll('section').forEach(s => s.classList.remove('section-active'));
+                        targetEl.classList.add('section-active');
+                        // close mobile nav if open
+                        nav.classList.remove('active');
+                        menuIcon.classList.remove('bx-x');
+                    }
+                });
+            });
+
+            // Initialize first visible section on load
+            const firstSection = document.querySelector('section[id]');
+            if (firstSection) firstSection.classList.add('section-active');
+
+            // Scroll spy using IntersectionObserver
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.55 };
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    const id = entry.target.getAttribute('id');
+                    const navLink = document.querySelector('nav a[href="#' + id + '"]');
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+                        if (navLink) navLink.classList.add('active');
+
+                        // ensure the section gets the active marker
+                        document.querySelectorAll('section').forEach(s => s.classList.remove('section-active'));
+                        entry.target.classList.add('section-active');
+                    }
+                });
+            }, observerOptions);
+            sections.forEach(s => observer.observe(s));
+
+            // Typing effect (kept simple)
+            (function typingEffect() {
+                const el = document.querySelector('.typing-text');
+                if (!el) return;
+                const texts = ['Welcome to my portfolio!', 'I build responsive websites.', 'I love coding and learning new tech.'];
+                let charIndex = 0, textIndex = 0, typing = true;
+                const speed = 60, pause = 1200;
+                function tick() {
+                    const full = texts[textIndex];
+                    if (typing) {
+                        el.textContent = full.slice(0, ++charIndex);
+                        if (charIndex === full.length) { typing = false; setTimeout(tick, pause); }
+                        else setTimeout(tick, speed);
+                    } else {
+                        el.textContent = full.slice(0, --charIndex);
+                        if (charIndex === 0) { typing = true; textIndex = (textIndex + 1) % texts.length; setTimeout(tick, speed); }
+                        else setTimeout(tick, speed / 1.2);
+                    }
+                }
+                tick();
+            })();
+
+            // Image modal
+            (function imageModal() {
+                const profileImg = document.getElementById('profile-image');
+                const modal = document.getElementById('image-modal');
+                const modalImg = modal.querySelector('img');
+                const closeBtn = modal.querySelector('.close-btn');
+                if (!profileImg || !modal) return;
+                function openModal() {
+                    const large = profileImg.dataset.large || profileImg.src;
+                    modalImg.src = large;
+                    modal.classList.add('open');
+                    modal.setAttribute('aria-hidden','false');
+                    closeBtn.focus();
+                }
+                function closeModal() {
+                    modal.classList.remove('open');
+                    modal.setAttribute('aria-hidden','true');
+                    modalImg.src = '';
+                    profileImg.focus();
+                }
+                profileImg.addEventListener('click', openModal);
+                closeBtn.addEventListener('click', closeModal);
+                modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+                document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+            })();
+
+            // Back to top
+            const backToTop = document.getElementById('back-to-top');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 400) backToTop.classList.add('show'); else backToTop.classList.remove('show');
+                if (window.scrollY > 50) header.classList.add('sticky'); else header.classList.remove('sticky');
+            });
+            backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+            // Keyboard section navigation: ArrowDown (next), ArrowUp (previous)
+            const sectionList = Array.from(document.querySelectorAll('section[id]'));
+            document.addEventListener('keydown', function (e) {
+                if (!['ArrowDown', 'ArrowUp'].includes(e.key)) return;
+                e.preventDefault();
+                const active = document.querySelector('section.section-active') || sectionList[0];
+                let idx = sectionList.indexOf(active);
+                if (e.key === 'ArrowDown') idx = Math.min(sectionList.length - 1, idx + 1);
+                else idx = Math.max(0, idx - 1);
+                const next = sectionList[idx];
+                next.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelectorAll('section').forEach(s => s.classList.remove('section-active'));
+                next.classList.add('section-active');
+            });
+
+            // Projects 'View' buttons -> simple modal with details
+            document.querySelectorAll('.view-project').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const id = this.dataset.project;
+                    const modal = document.getElementById('project-modal');
+                    const content = document.getElementById('project-modal-content');
+                    const close = modal.querySelector('.close-btn');
+                    const details = {
+                        a: '<h2>Project A</h2><p>Detailed info about Project A including tech stack, links, and screenshots.</p>',
+                        b: '<h2>Project B</h2><p>Detailed info about Project B including tech stack, links, and screenshots.</p>',
+                        c: '<h2>Project C</h2><p>Detailed info about Project C including tech stack, links, and screenshots.</p>'
+                    };
+                    content.innerHTML = details[id] || '<p>No details available.</p>';
+                    modal.classList.add('open');
+                    modal.setAttribute('aria-hidden','false');
+                    close.focus();
+                    close.onclick = () => { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); content.innerHTML = ''; };
+                    modal.addEventListener('click', e => { if (e.target === modal) { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); content.innerHTML = ''; }});
+                    document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); content.innerHTML = ''; document.removeEventListener('keydown', esc); }});
+                });
+            });
+
+            // Simple form handler (prevent actual submit for demo)
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    alert('Thanks — your message has been (mock) sent!');
+                    contactForm.reset();
+                });
+            }
+        });
+    </script>
+</body>
+</html>

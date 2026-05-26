@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Airline - Simple Frontend</title>
+  <link rel="stylesheet" href="AirlinesReservation.css">
+</head>
+<body>
+  <main class="container" id="app">
+    <header class="header">
+      <h1 class="title">Airline Flights</h1>
+      <div class="controls">
+        <button id="refresh" class="btn btn-secondary">Refresh</button>
+      </div>
+    </header>
+
+    <section class="table-wrap" aria-live="polite">
+      <table id="flights-table" class="flights-table" aria-describedby="flights-desc">
+        <caption id="flights-desc" class="sr-only">List of available flights with seat counts and reservation actions</caption>
+        <thead>
+          <tr>
+            <th scope="col">Flight</th>
+            <th scope="col">Details</th>
+            <th scope="col">Seats</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <footer class="footer">
+      <small>Data stored in Airline.txt on the server</small>
+    </footer>
+  </main>
+  <script src="AirlinesReservation.jsAirlinesReservation.html"></script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AI Video Generator UI</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family: "Poppins", sans-serif;
+    }
+
+    body{
+        min-height:100vh;
+        background: linear-gradient(135deg,#0f172a,#1e293b,#111827);
+        overflow:hidden;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        color:white;
+    }
+
+    /* Animated background */
+    body::before{
+        content:'';
+        position:absolute;
+        width:500px;
+        height:500px;
+        background:rgba(0,255,255,0.15);
+        border-radius:50%;
+        filter:blur(100px);
+        top:-150px;
+        left:-100px;
+        animation: float1 8s ease-in-out infinite alternate;
+    }
+
+    body::after{
+        content:'';
+        position:absolute;
+        width:450px;
+        height:450px;
+        background:rgba(255,0,200,0.15);
+        border-radius:50%;
+        filter:blur(100px);
+        bottom:-150px;
+        right:-100px;
+        animation: float2 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes float1{
+        from{
+            transform:translateY(0px);
+        }
+        to{
+            transform:translateY(40px);
+        }
+    }
+
+    @keyframes float2{
+        from{
+            transform:translateY(0px);
+        }
+        to{
+            transform:translateY(-40px);
+        }
+    }
+
+    .container{
+        position:relative;
+        z-index:10;
+        width:90%;
+        max-width:1000px;
+        background:rgba(255,255,255,0.08);
+        border:1px solid rgba(255,255,255,0.1);
+        backdrop-filter: blur(18px);
+        border-radius:30px;
+        padding:40px;
+        box-shadow:0 10px 40px rgba(0,0,0,0.4);
+        animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn{
+        from{
+            opacity:0;
+            transform:translateY(30px);
+        }
+        to{
+            opacity:1;
+            transform:translateY(0);
+        }
+    }
+
+    .top{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:30px;
+        flex-wrap:wrap;
+    }
+
+    .left{
+        flex:1;
+    }
+
+    .title{
+        font-size:3rem;
+        line-height:1.1;
+        font-weight:700;
+        margin-bottom:15px;
+    }
+
+    .title span{
+        background:linear-gradient(90deg,#00f7ff,#ff00d4);
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+    }
+
+    .desc{
+        color:#d1d5db;
+        line-height:1.7;
+        margin-bottom:30px;
+        max-width:500px;
+    }
+
+    .prompt-box{
+        display:flex;
+        gap:15px;
+        flex-wrap:wrap;
+    }
+
+    input{
+        flex:1;
+        min-width:220px;
+        padding:16px 20px;
+        border:none;
+        border-radius:15px;
+        outline:none;
+        background:rgba(255,255,255,0.12);
+        color:white;
+        font-size:1rem;
+        transition:0.3s;
+    }
+
+    input:focus{
+        transform:scale(1.02);
+        background:rgba(255,255,255,0.18);
+    }
+
+    button{
+        padding:16px 28px;
+        border:none;
+        border-radius:15px;
+        background:linear-gradient(90deg,#00f7ff,#ff00d4);
+        color:white;
+        font-size:1rem;
+        cursor:pointer;
+        font-weight:600;
+        transition:0.4s;
+    }
+
+    button:hover{
+        transform:translateY(-3px) scale(1.03);
+        box-shadow:0 10px 20px rgba(0,0,0,0.3);
+    }
+
+    .right{
+        width:320px;
+        height:420px;
+        border-radius:25px;
+        overflow:hidden;
+        position:relative;
+        background:#111827;
+        box-shadow:0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .preview{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+        opacity:0;
+        transition:opacity 1.2s ease;
+        position:absolute;
+    }
+
+    .preview.active{
+        opacity:1;
+    }
+
+    .overlay{
+        position:absolute;
+        inset:0;
+        background:linear-gradient(to top,rgba(0,0,0,0.6),transparent);
+    }
+
+    .video-text{
+        position:absolute;
+        bottom:25px;
+        left:20px;
+        z-index:5;
+    }
+
+    .video-text h3{
+        font-size:1.5rem;
+        margin-bottom:5px;
+    }
+
+    .video-text p{
+        color:#d1d5db;
+        font-size:0.9rem;
+    }
+
+    .loader{
+        margin-top:25px;
+        display:none;
+        align-items:center;
+        gap:10px;
+        color:#cbd5e1;
+    }
+
+    .dot{
+        width:10px;
+        height:10px;
+        border-radius:50%;
+        background:#00f7ff;
+        animation:bounce 0.6s infinite alternate;
+    }
+
+    .dot:nth-child(2){
+        animation-delay:0.2s;
+    }
+
+    .dot:nth-child(3){
+        animation-delay:0.4s;
+    }
+
+    @keyframes bounce{
+        from{
+            transform:translateY(0);
+            opacity:0.5;
+        }
+        to{
+            transform:translateY(-10px);
+            opacity:1;
+        }
+    }
+
+    @media(max-width:850px){
+        .top{
+            flex-direction:column;
+        }
+
+        .right{
+            width:100%;
+            max-width:350px;
+        }
+
+        .title{
+            font-size:2.2rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top">
+
+        <div class="left">
+            <h1 class="title">
+                AI <span>Video Generator</span>
+            </h1>
+
+            <p class="desc">
+                Create futuristic AI generated cinematic videos with smooth transitions and beautiful animations.
+                Type your imagination and watch the preview come alive.
+            </p>
+
+            <div class="prompt-box">
+                <input type="text" id="prompt" placeholder="Describe your dream video..." />
+                <button onclick="generateVideo()">
+                    Generate
+                </button>
+            </div>
+
+            <div class="loader" id="loader">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <span>Generating cinematic magic...</span>
+            </div>
+        </div>
+
+        <div class="right">
+
+            <img class="preview active"
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
+            />
+
+            <img class="preview"
+            src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=1200&auto=format&fit=crop"
+            />
+
+            <img class="preview"
+            src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=1200&auto=format&fit=crop"
+            />
+
+            <div class="overlay"></div>
+
+            <div class="video-text">
+                <h3 id="videoTitle">Nature Escape</h3>
+                <p>AI Cinematic Preview</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    const previews = document.querySelectorAll(".preview");
+    const loader = document.getElementById("loader");
+    const videoTitle = document.getElementById("videoTitle");
+
+    let current = 0;
+    let autoSlide;
+
+    function startSlides(){
+        autoSlide = setInterval(() => {
+
+            previews[current].classList.remove("active");
+
+            current = (current + 1) % previews.length;
+
+            previews[current].classList.add("active");
+
+        }, 3500);
+    }
+
+    startSlides();
+
+    function generateVideo(){
+
+        const prompt = document.getElementById("prompt").value;
+
+        if(prompt.trim() === ""){
+            alert("Please enter a video prompt!");
+            return;
+        }
+
+        loader.style.display = "flex";
+
+        videoTitle.innerText = "Generating...";
+
+        clearInterval(autoSlide);
+
+        setTimeout(() => {
+
+            loader.style.display = "none";
+
+            videoTitle.innerText = prompt;
+
+            startSlides();
+
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
